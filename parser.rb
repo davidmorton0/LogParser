@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
+require_relative 'log_reader'
 
 DEFAULT_FILE = 'webserver.log'
-PATTERN = '(\/\w+)(\/?\d*)\s([\d.]+)'
 
 class Parser
 
@@ -12,14 +12,8 @@ class Parser
       @page_records.default = 0;
     end
 
-    def load_file(file = DEFAULT_FILE)
-      File.open(file,'r').each { |line| add_log(line) }
-      self
-    end
-
-    def add_log(page_log)
-      lg = page_log.split(' ')
-      page_records[[lg[1], lg[0]]] += 1
+    def load_log(file = DEFAULT_FILE)
+      self.page_records = LogReader.new(file).load_log
     end
 
     def validate_ip4_address(ip_address)
@@ -43,6 +37,9 @@ class Parser
 
 end
 
-parser = Parser.new
-parser.load_file
-parser.list_page_views
+if __FILE__ == $0
+  parser = Parser.new
+  parser.load_log
+  parser.page_records
+  parser.list_page_views
+end

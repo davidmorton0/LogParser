@@ -2,37 +2,6 @@ require 'minitest/autorun'
 require_relative 'parser'
 
 class ParserTest < Minitest::Test
-  def test_loads_log_file
-    parser = Parser.new.load_file('test.log')
-    result = {["100.100.100.100", "/home"]=>2,
-              ["100.100.100.100", "/about"]=>1,
-              ["101.100.100.100", "/home"]=>1,
-              ["101.100.100.100", "/about"]=>1}
-    assert_equal parser.page_records, result
-  end
-
-  def test_loads_unique_pages_log_file
-    parser = Parser.new.load_file('up_test.log')
-    result = {["100.100.100.100", "/home"]=>1,
-              ["100.100.100.100", "/home/1"]=>1,
-              ["100.100.100.100", "/home/2"]=>1,
-              ["100.100.100.100", "/about"]=>1,
-              ["101.100.100.100", "/home"]=>1,
-              ["101.100.100.100", "/about"]=>1,
-              ["101.100.100.100", "/about/99"]=>1,
-              ["101.100.100.100", "/about/4"]=>1}
-    assert_equal parser.page_records, result
-  end
-
-  def test_parses_log_for_non_specific_page
-    page_view = '/help_page 126.318.035.038'
-    assert_equal Parser.new.process(input), [["126.318.035.038", "/help_page", ""]]
-  end
-
-  def test_parses_log_for_specific_page
-    input = '/help_page/1 126.318.035.038'
-    #assert_equal Parser.new.process(input), [["126.318.035.038", "/help_page", "/1"]]
-  end
 
   def test_outputs_log_for_non_specific_page
     input = ["126.318.035.038", "/help_page"]
@@ -42,12 +11,6 @@ class ParserTest < Minitest::Test
   def test_outputs_log_for_unique_page
     input = ["126.318.035.038", "/help_page", "/1"]
     assert_equal Parser.new.output_unique_page_counts(*input, 1), '126.318.035.038 /help_page/1 - 1 view'
-  end
-
-  def test_adds_log
-    parser = Parser.new
-    parser.add_log('/help_page/1 126.318.035.038')
-    assert_equal parser.page_records, { ['126.318.035.038', '/help_page/1'] => 1 }
   end
 
   def test_validates_ip4_addresses
