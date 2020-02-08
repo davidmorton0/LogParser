@@ -1,5 +1,5 @@
 #require 'minitest/autorun'
-require 'LogParser'
+require 'log_parser'
 
 class LogReaderTest < Minitest::Test
 
