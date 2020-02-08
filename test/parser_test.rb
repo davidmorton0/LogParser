@@ -1,47 +1,59 @@
 #require 'minitest/autorun'
-require 'LogParser'
+require 'log_parser'
 
-LOGS = { "/home" => [['1.1.1.1'],['2.2.2.2']],
+INPUT = { "/home" => [['1.1.1.1'],['2.2.2.2']],
          "/about" => [['1.1.1.1'],['1.1.1.1'],['2.2.2.2']], }
+
+OUTPUT1 = { "/home" => { visits: 2, unique_views: 2 },
+            "/about" => { visits: 3, unique_views: 2 } }
+
+OUTPUT2 = { title: 'Page Visits',
+            descriptor: ['', 'visit'],
+            info: [["/home", 2],
+                   ["/about", 3]] }
+
+OUTPUT3 = { title: 'Unique Page Views',
+            descriptor: ['', 'unique view'],
+            info: [["/home", 2],
+                   ["/about", 2]] }
 
 class ParserTest < Minitest::Test
 
-  def test_outputs_page_views
-    assert_equal Parser.new(file: nil).output_page_views('/help_page', 1), '/help_page - 1 visit'
-  end
-
-  def test_outputs_unique_page_views
-    assert_equal Parser.new(file: nil).output_unique_page_views('/help_page/1', 1), '/help_page/1 - 1 unique view'
-  end
-
-  def test_counts_page_views
+  def test_reads_pages
     parser = Parser.new(file: nil)
-    parser.count_views(LOGS)
-    result = { "/home" => 2,
-               "/about" => 3 }
-    assert_equal result, parser.page_views
+    parser.count_views(INPUT)
+    assert OUTPUT1["/home"]
+    assert OUTPUT1["/about"]
+  end
+
+  def test_counts_page_visits
+    parser = Parser.new(file: nil)
+    parser.count_views(INPUT)
+    assert_equal OUTPUT1["/home"][:visits], parser.page_views["/home"][:visits]
+    assert_equal OUTPUT1["/about"][:visits], parser.page_views["/about"][:visits]
   end
 
   def test_counts_unique_page_views
     parser = Parser.new(file: nil)
-    parser.count_views(LOGS)
-    result = { "/home" => 2,
-               "/about" => 2 }
-    assert_equal result, parser.unique_page_views
+    parser.count_views(INPUT)
+    assert_equal OUTPUT1["/home"][:unique_views], parser.page_views["/home"][:unique_views]
+    assert_equal OUTPUT1["/about"][:unique_views], parser.page_views["/about"][:unique_views]
   end
 
-  def test_lists_page_views
+  def test_returns_page_visits_information
     parser = Parser.new(file: nil)
-    parser.count_views(LOGS)
-    result = ['/about - 3 visits', '/home - 2 visits']
-    assert_equal result, parser.list_page_views
+    parser.count_views(INPUT)
+    assert_equal OUTPUT2[:title], parser.view_information(:visits)[:title]
+    assert_equal OUTPUT2[:descriptor], parser.view_information(:visits)[:descriptor]
+    assert_equal OUTPUT2[:info], parser.view_information(:visits)[:info]
   end
 
-  def test_lists_unique_page_views
+  def test_returns_page_unique_views_information
     parser = Parser.new(file: nil)
-    parser.count_views(LOGS)
-    result = ['/about - 2 visits', '/home - 2 visits']
-    assert_equal result, parser.list_unique_page_views
+    parser.count_views(INPUT)
+    assert_equal OUTPUT3[:title], parser.view_information(:unique_views)[:title]
+    assert_equal OUTPUT3[:descriptor], parser.view_information(:unique_views)[:descriptor]
+    assert_equal OUTPUT3[:info], parser.view_information(:unique_views)[:info]
   end
 
 end
