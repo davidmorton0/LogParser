@@ -1,6 +1,5 @@
 class IpValidator
-
-  VALID_IP4 = '^' + (['([0-9]|[0-9][0-9]|[0-1][0-9][0-9]|2[0-4][0-9]|25[0-5])'] * 4).join('[.]') + '$'
+  include IpRegex
 
   attr_reader :ip_address
 
@@ -13,7 +12,7 @@ class IpValidator
   end
 
   def valid_ip6?
-
+    !!ip_address.match(VALID_IP6)
   end
 
 end
