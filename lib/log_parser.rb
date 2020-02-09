@@ -9,6 +9,12 @@ DEFAULT_OPTIONS = { page_views: true,
                     unique_page_views: true,
                     file: 'webserver.log'}
 
+LOG_WARNINGS = { file: { name: 'File Error', important: true },
+                 log: { name: 'Log Format Error', important: true },
+                 ip4: { name: 'ip4 Address Format Error', important: false },
+                 ip6: { name: 'ip6 Address Format Error', important: false },
+                 page: { name: 'Webpage Format Error', important: false } }
+
 module LogParser
 
 end
@@ -48,4 +54,7 @@ if __FILE__ == $0
   parser = Parser.new({file: @options[:file]})
   puts parser.list_page_views(:visits, color: @options[:syntax_highlighting]) if @options[:page_views]
   puts parser.list_page_views(:unique_views, color: @options[:syntax_highlighting]) if @options[:unique_page_views]
+  warning_handler = WarningHandler.new(parser.warnings)
+  warning_handler.set_warning_info(LOG_WARNINGS)
+  puts "\n", warning_handler.warnings_summary
 end
