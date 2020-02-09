@@ -1,12 +1,12 @@
 class Parser
   include Constants
-  
-    attr_accessor :page_views, :warnings
+
+    attr_accessor :page_views, :read_log
 
     def initialize(file: nil, log: nil)
       @page_views = {}
-      self.count_views(LogReader.new(file: file, log: log).page_views)
-      #@warnings = log_record[:warnings]
+      @read_log = LogReader.new(file: file, log: log)
+      self.count_views(read_log.page_views)
       self
     end
 
@@ -15,6 +15,10 @@ class Parser
         @page_views[page] = { visits: ip_addresses.length,
                               unique_views: ip_addresses.uniq.length }
       }
+    end
+
+    def warnings
+       @read_log ? @read_log.warnings : []
     end
 
     def view_information(view_type)
