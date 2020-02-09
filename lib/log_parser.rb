@@ -9,12 +9,6 @@ DEFAULT_OPTIONS = { page_views: true,
                     unique_page_views: true,
                     file: 'webserver.log'}
 
-LOG_WARNINGS = { file: { name: 'File Error', important: true },
-                 log: { name: 'Log Format Error', important: true },
-                 ip4: { name: 'ip4 Address Format Error', important: false },
-                 ip6: { name: 'ip6 Address Format Error', important: false },
-                 page: { name: 'Webpage Format Error', important: false } }
-
 module LogParser
 
 end

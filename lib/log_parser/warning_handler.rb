@@ -1,4 +1,5 @@
 class WarningHandler
+  include Constants
 
   attr_reader :warnings, :warning_info
 
