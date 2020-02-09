@@ -1,11 +1,6 @@
-DEFAULT_FILE = './log_parser/webserver.log'
-INFO_TITLES = { visits: 'Page Visits',
-                unique_views: 'Unique Page Views' }
-DESCRIPTORS = { visits: ['', 'visit'],
-                unique_views: ['', 'unique view'] }
-
 class Parser
-
+  include Constants
+  
     attr_accessor :page_views, :warnings
 
     def initialize(file: nil, log: nil)
@@ -29,8 +24,8 @@ class Parser
     end
 
 
-    def list_page_views(view_type)
-      InfoDisplayer.new(view_information(view_type)).display
+    def list_page_views(view_type, color: false)
+      InfoDisplayer.new(view_information(view_type)).display(color: color)
     end
 
 end

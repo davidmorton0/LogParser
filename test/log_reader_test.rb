@@ -1,5 +1,4 @@
-#require 'minitest/autorun'
-require 'log_parser'
+require 'test_helper'
 
 class LogReaderTest < Minitest::Test
 
@@ -21,7 +20,7 @@ class LogReaderTest < Minitest::Test
   end
 
   def test_loads_log_file
-    log_reader = LogReader.new(file: File.join(File.dirname(__FILE__), '/test.log'))
+    log_reader = LogReader.new(file: File.join(File.dirname(__FILE__), '/test_logs/test.log'))
     result = {"/home"=>["100.100.100.100",
                         "100.100.100.100",
                         "101.100.100.100"],

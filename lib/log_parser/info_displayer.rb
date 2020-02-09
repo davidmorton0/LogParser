@@ -1,10 +1,10 @@
-require 'byebug'
-
 class InfoDisplayer
+  include ColorText
 
-  FORMAT_COLORS = {
-    title: 'light_blue',
-    columns: ['green', 'red', 'yellow']
+  FORMAT_COLORS = { # can be :black, :red, :green, :yellow, :blue, :magenta,
+    title: :cyan,   #        :cyan, :gray, :white
+    line_break: :yellow,
+    columns: [:gray, :green, :red]  #if more columns, last color will be used
   }
 
   def initialize(info)
@@ -12,21 +12,8 @@ class InfoDisplayer
     @display = []
   end
 
-  #String.disable_colorization !@options[:syntax_highlighting]
-  #puts 'Page Visits'.yellow, parser.list_page_views, "\n" if @options[:page_views]
-  #puts 'Unique Page Views'.yellow, parser.list_unique_page_views, "\n" if @options[:unique_page_views]
-
-#  def output_page_views(page, views)
-#    "#{page}".red + " - #{views} visit#{views == 1 ? '' : 's'}".blue
-#  end
-
-#  def output_unique_page_views(page, views)
-#    "#{page}".red + " - #{views} unique view#{views == 1 ? '' : 's'}".green
-#  end
-    #@info[:info].map{|line| line.map.with_index{|str, i| (str.to_s).send(FORMAT_COLORS[:columns][i] || FORMAT_COLORS[:columns][-1]) }.join(' ')}.to_s
-
   def add_title
-    line_break = '-' * @info[:title].length + "\n"
+    line_break = "-" * @info[:title].length
     @display.push(line_break, @info[:title], line_break)
   end
 
@@ -42,10 +29,22 @@ class InfoDisplayer
     end
   end
 
-  def display
+  def display(color: false)
     add_title
     @info[:info].sort_by{|page, views| [-views, page] }.each{ |row| add_row(row) }
+    colorize_display if color
     @display
+  end
+
+  def colorize_display
+    @display[0] = colorize(@display[0], FORMAT_COLORS[:line_break])
+    @display[1] = colorize(@display[1], FORMAT_COLORS[:title])
+    @display[2] = colorize(@display[2], FORMAT_COLORS[:line_break])
+    @display
+      .drop(3)
+      .each.with_index{ |line, i| @display[i + 3] = line.split(' ')
+        .map.with_index{ |str, j| colorize(str, FORMAT_COLORS[:columns][j] || FORMAT_COLORS[:columns][-1]) }
+        .join(' ') }
   end
 
 

@@ -1,10 +1,13 @@
 #!/usr/bin/env ruby
+Dir.glob(File.join(File.dirname(__FILE__), 'log_parser', '*.rb')).sort.each { |file|
+  #puts file
+  require file }
 
-Dir.glob(File.join(File.dirname(__FILE__), 'log_parser', '*.rb')).sort.each { |file| require file }
 require 'optparse'
 
-
-DEFAULT_OPTIONS = { page_views: true, unique_page_views: true }
+DEFAULT_OPTIONS = { page_views: true,
+                    unique_page_views: true,
+                    file: 'webserver.log'}
 
 module LogParser
 
@@ -43,6 +46,6 @@ if __FILE__ == $0
   end.parse!
 
   parser = Parser.new({file: @options[:file]})
-  puts parser.list_page_views(:visits) if @options[:page_views]
-  puts parser.list_page_views(:unique_views) if @options[:unique_page_views]
+  puts parser.list_page_views(:visits, color: @options[:syntax_highlighting]) if @options[:page_views]
+  puts parser.list_page_views(:unique_views, color: @options[:syntax_highlighting]) if @options[:unique_page_views]
 end
