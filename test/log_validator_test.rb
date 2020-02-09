@@ -1,5 +1,4 @@
-#require 'minitest/autorun'
-require 'log_parser'
+require 'test_helper'
 
 class LogValidatorTest < Minitest::Test
 

@@ -1,20 +1,15 @@
-require 'minitest/autorun'
-require 'log_parser'
-
-INPUT2 = { title: 'Page Visits',
-          descriptor: ['', 'egg', 'cat', 'bowl'],
-          info: [["/home", 1, 2, 3 ],
-                 ["/about", 1, 2, 3 ]]
-        }
-
-OUTPUT = [['Page Visits'],
-          ['/about', '1 egg', '2 cats', '3 bowls'],
-          ['/home', '1 egg', '2 cats', '3 bowls']]
+require 'test_helper'
 
 class InfoDisplayerTest < Minitest::Test
+  include TestData
 
   def test_shows_title
-    assert_equal OUTPUT[0][0], InfoDisplayer.new(INPUT2).display[0]
+    assert_equal OUTPUT[0][1], InfoDisplayer.new(INPUT2).display[0][1]
+  end
+
+  def test_shows_line_breaks
+    assert_equal OUTPUT[0][0], InfoDisplayer.new(INPUT2).display[0][0]
+    assert_equal OUTPUT[0][2], InfoDisplayer.new(INPUT2).display[0][2]
   end
 
   def test_sorts_list_correctly
