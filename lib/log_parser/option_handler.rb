@@ -44,9 +44,8 @@ class OptionHandler
       end
 
       opts.on("-o", "--output_file FILE",
-        "File to write output to.  Disables highlighting") do |file|
+        "Writes output to file.") do |file|
           @options[:output_file] = file
-          @options[:highlighting] = false
       end
 
       opts.on("-h", "--help", "Prints help") do

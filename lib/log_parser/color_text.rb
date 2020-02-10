@@ -16,4 +16,8 @@ module ColorText
     "\e[#{COLOR_CODE[color]}m#{text}\e[0m"
   end
 
+  def colorize_if(text, color, change_color = false)
+    change_color ? colorize(text, color) : text
+  end
+
 end
