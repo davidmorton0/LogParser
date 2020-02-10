@@ -76,7 +76,7 @@ class OptionHandler
       end
 
       opts.on("-I", "--no_ip_validation", "No validatation of ip addresses") do
-          @options[:ip_validation] = false
+          @options[:ip_validation] = :none
       end
 
       opts.on("-r", "--remove_invalid",

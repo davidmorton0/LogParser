@@ -15,9 +15,9 @@ class LogParserTest < Minitest::Test
     #puts parser.page_views
     #puts parser.view_information(:visits)
     #puts parser.view_information(:unique_views)
-    info_displayer = InfoDisplayer.new(parser.view_information(:visits))
+    info_displayer = Formatter.new(parser.view_information(:visits))
     #puts info_displayer.display
-    info_displayer = InfoDisplayer.new(parser.view_information(:unique_views))
+    info_displayer = Formatter.new(parser.view_information(:unique_views))
     #puts info_displayer.display
   end
 

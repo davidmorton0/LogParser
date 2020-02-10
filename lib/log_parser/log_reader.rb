@@ -28,7 +28,7 @@ class LogReader
 
   def add_log(log:, file: false, index: 1)
     @logs_read += 1
-    if !log.match(LOG_PATTERN)
+    if !log.match(VALID_LOG)
       add_warning(type: :log, message: "format", file: file, index: index)
       return self
     end

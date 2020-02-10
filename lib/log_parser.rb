@@ -16,14 +16,16 @@ if __FILE__ == $0
 
   @options = OptionHandler.new.options
 
-  parser = Parser.new(file: @options[:file],
-                      file_list: @options[:files] ? @options[:files].split(' ') : nil,
-                      path_validation: @options[:path_validation],
-                      ip_validation: @options[:ip_validation],
-                      log_remove: @options[:ip_remove])
+  parser = Parser.new(
+    file: @options[:file],
+    file_list: @options[:files] ? @options[:files].split(' ') : nil,
+    path_validation: @options[:path_validation],
+    ip_validation: @options[:ip_validation],
+    log_remove: @options[:log_remove])
 
   output_processor = OutputProcessor.new(
-    warning_handler: WarningHandler.new(parser.warnings).set_warning_info(LOG_WARNINGS),
+    warning_handler: WarningHandler.new(parser.warnings)
+                                   .set_warning_info(LOG_WARNINGS),
     parser: parser,
     options: @options)
 
