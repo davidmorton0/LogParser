@@ -9,8 +9,7 @@ LOG_WARNINGS = { file: { name: 'File Errors', important: true },
                  ip6: { name: 'ip6 Address Format Errors', important: false },
                  page: { name: 'Path Format Errors', important: false } }
 
-module LogParser#
-
+module LogParser
 end
 
 if __FILE__ == $0
@@ -18,6 +17,7 @@ if __FILE__ == $0
   @options = OptionHandler.new.options
 
   parser = Parser.new(file: @options[:file],
+                      file_list: @options[:files] ? @options[:files].split(' ') : nil,
                       path_validation: @options[:path_validation],
                       ip_validation: @options[:ip_validation],
                       log_remove: @options[:ip_remove])
