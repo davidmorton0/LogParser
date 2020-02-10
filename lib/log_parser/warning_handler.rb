@@ -9,6 +9,7 @@ class WarningHandler
 
   def set_warning_info(warning_info)
     @warning_info = warning_info
+    self
   end
 
   def warnings_summary

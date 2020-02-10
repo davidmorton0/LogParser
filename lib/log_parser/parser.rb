@@ -3,9 +3,9 @@ class Parser
 
     attr_accessor :page_views, :read_log
 
-    def initialize(file: nil, log: nil)
+    def initialize(file:, path_validation: true, ip_validation: :ip4, log_remove: false)
       @page_views = {}
-      @read_log = LogReader.new(file: file, log: log)
+      @read_log = LogReader.new(file: file, path_validation: path_validation, ip_validation: ip_validation, log_remove: false)
       self.count_views(read_log.page_views)
       self
     end
@@ -25,6 +25,11 @@ class Parser
       { title: INFO_TITLES[view_type],
         descriptor: DESCRIPTORS[view_type],
         info: @page_views.map{|page, views| [page, views[view_type]]} }
+    end
+
+    def log_information
+      { logs_read: @read_log.logs_read,
+        logs_added: @read_log.logs_added }
     end
 
 
