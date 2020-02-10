@@ -38,9 +38,11 @@ class OptionHandler
           @options[:file] = file
       end
 
-      opts.on("-m", "--multiple_files 'FILES'",
-        "List of files to read - in quotes separated by spaces") do |file|
-          @options[:files] = FILES
+      opts.on("-m", "--multiple_files 'FILE_LIST'",
+        "Reads a list of files in quotes and gives combined result.") do |file|
+          @options[:file] = nil
+          @options[:multiple_files] = true
+          @options[:files] = file
       end
 
       opts.on("-o", "--output_file FILE",

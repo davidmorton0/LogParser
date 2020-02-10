@@ -3,9 +3,12 @@ class Parser
 
     attr_accessor :page_views, :read_log
 
-    def initialize(file:, path_validation: true, ip_validation: :ip4, log_remove: false)
+    def initialize(file:, file_list: nil, path_validation: true, ip_validation: :ip4, log_remove: false)
       @page_views = {}
       @read_log = LogReader.new(file: file, path_validation: path_validation, ip_validation: ip_validation, log_remove: false)
+      if file_list
+        file_list.each{ |file| @read_log.load_log(file) }
+      end
       self.count_views(read_log.page_views)
       self
     end

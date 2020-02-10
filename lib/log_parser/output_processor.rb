@@ -46,17 +46,17 @@ class OutputProcessor
 
   def write_to_file
     f = File.new(@options[:output_file],  'w')
-    f.write parser.list_page_views(:visits).join("\n") if @options[:page_views]
+    f.write @parser.list_page_views(:visits).join("\n") if @options[:page_views]
     f.write "\n"
-    f.write parser.list_page_views(:unique_views).join("\n") if @options[:unique_page_views]
+    f.write @parser.list_page_views(:unique_views).join("\n") if @options[:unique_page_views]
     f.write "\n"
     f.write "\n", "File: #{@options[:file]}"
     f.write "\n"
-    f.write "Logs read: #{parser.log_information[:logs_read]}"
+    f.write "Logs read: #{@parser.log_information[:logs_read]}"
     f.write "\n"
-    f.write "Logs added: #{parser.log_information[:logs_added]}"
+    f.write "Logs added: #{@parser.log_information[:logs_added]}"
     f.write "\n"
-    f.write "\n", warning_handler.warnings_summary.join("\n"), "\n"
+    f.write "\n", @warning_handler.warnings_summary.join("\n"), "\n"
     f.close
     puts 'Output written to: %s' % @options[:output_file]
   end
