@@ -37,7 +37,7 @@ class Parser
 
 
     def list_page_views(view_type, color: false)
-      InfoDisplayer.new(view_information(view_type)).display(color: color)
+      Formatter.new(view_information(view_type), add_color: color).add_output
     end
 
 end

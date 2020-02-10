@@ -1,7 +1,6 @@
 class PathValidator
-
-  VALID_PATH = '^(/[a-zA-Z0-9.$_+\\-!*(),\']+/?)*/?$'
-
+  include Constants
+  
   attr_reader :path
 
   def initialize(path)

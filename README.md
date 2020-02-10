@@ -55,4 +55,4 @@ It should be able to
 
 helpful if:
 + multiple log files can be added and combined either together or in sequence
-- save to file (default based on timestamp)
++ save to file (default based on timestamp)
