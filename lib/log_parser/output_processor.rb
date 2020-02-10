@@ -8,7 +8,7 @@ class OutputProcessor
   end
 
   def output_to_display
-    if @options[:silent]
+    if @options[:quiet]
       puts "\n", @warning_handler.important_warnings(color: @options[:highlighting])
     else
       display_view_info()
@@ -30,22 +30,17 @@ class OutputProcessor
 
   def output_to_file
     if @options[:output_file]
-      if File.exist?(@options[:output_file])
-        puts "File already exists. Overwrite? yes/no"
-        input = gets.rstrip.downcase
-        if input == "y" || input == "yes"
-          write_to_file
-        else
-          puts 'No file written'
-        end
+      if File.exist?(@options[:output_file]) || @options[:timestamp]
+        file = timestamp_filename(@options[:output_file])
       else
-        write_to_file
+        file = @options[:output_file]
       end
+      write_to_file(file)
     end
   end
 
-  def write_to_file
-    f = File.new(@options[:output_file],  'w')
+  def write_to_file(file)
+    f = File.new(file,  'w')
     f.write @parser.list_page_views(:visits).join("\n") if @options[:page_views]
     f.write "\n"
     f.write @parser.list_page_views(:unique_views).join("\n") if @options[:unique_page_views]
@@ -58,7 +53,15 @@ class OutputProcessor
     f.write "\n"
     f.write "\n", @warning_handler.warnings_summary.join("\n"), "\n"
     f.close
-    puts 'Output written to: %s' % @options[:output_file]
+    puts 'Output written to: %s' % file
+  end
+
+  def timestamp_filename(file)
+    dir  = File.dirname(file)
+    base = File.basename(file, ".*")
+    time = Time.now.strftime('%d-%m-%y_%H-%M-%S')
+    ext  = File.extname(file)
+    File.join(dir, "#{base}_#{time}#{ext}")
   end
 
 end

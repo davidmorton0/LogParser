@@ -20,7 +20,8 @@ class OptionHandler
           @options[:verbose] = true
       end
 
-      opts.on("-s", "--silent", "No display except important warnings.  Disables verbose") do
+      opts.on("-q", "--quiet",
+        "No display except important warnings.  Disables verbose") do
           @options[:silent] = true
           @options[:verbose] = false
       end
@@ -29,66 +30,70 @@ class OptionHandler
           @options[:highlighting] = true
       end
 
-      opts.on("-C", "--no_color", "Disables highlighting (default)") do
+      opts.on("-C", "--no_color", "Disable highlighting (default)") do
           @options[:highlighting] = false
       end
 
       opts.on("-f", "--file FILE",
-        "Webserver log file to read. Default is webserver.log") do |file|
+        "Log file to read. Default is webserver.log") do |file|
           @options[:file] = file
       end
 
       opts.on("-m", "--multiple_files 'FILE_LIST'",
-        "Reads a list of files in quotes and gives combined result.") do |file|
+        "Read a list of files in quotes and combines") do |file|
           @options[:file] = nil
           @options[:multiple_files] = true
           @options[:files] = file
       end
 
-      opts.on("-o", "--output_file FILE",
-        "Writes output to file.") do |file|
-          @options[:output_file] = file
+      opts.on("-o", "--output_file [FILE]",
+        "Write output to file.") do |file|
+          @options[:output_file] = file || 'log_info.txt'
       end
 
-      opts.on("-h", "--help", "Prints help") do
+      opts.on("-t", "--timestamp", "Add timestamp to output file") do |file|
+          @options[:timestamp] = true
+      end
+
+      opts.on("-h", "--help", "Shows help") do
         puts opts
         exit
       end
 
       opts.on("-4", "--ip4_validation",
-        "Validates ip addresses using ip4 format (default)") do
+        "Validate ip addresses using ip4 format (default)") do
           @options[:ip_validation] = :ip4
       end
 
       opts.on("-6", "--ip6_validation",
-        "Validates ip addresses using ip6 format") do
+        "Validate ip addresses using ip6 format") do
           @options[:ip_validation] = :ip6
       end
 
       opts.on("-i", "--ip4_or_ip6_validation",
-        "Validates ip addresses using either ip4 or ip6 format") do
+        "Validate ip addresses using either ip4 or ip6 format") do
           @options[:ip_validation] = :ip4_ip6
       end
 
-      opts.on("-I", "--no_ip_validation", "Does not validate ip addresses") do
+      opts.on("-I", "--no_ip_validation", "No validatation of ip addresses") do
           @options[:ip_validation] = false
       end
 
       opts.on("-r", "--remove_invalid",
-        "Removes log from output if invalid ip addresss or path") do
+        "Ignore log if invalid ip addresss or path") do
           @options[:log_remove] = true
       end
 
       opts.on("-R", "--warn_invalid",
-        "Warns if invalid ip addresss or path, does not remove log (default)") do
+        "Warn if invalid ip addresss or path (default)") do
           @options[:log_remove] = false
       end
 
-      opts.on("-p", "--path_validation", "Validates path (default)") do
+      opts.on("-p", "--path_validation", "Validate webpage path (default)") do
           @options[:path_validation] = true
       end
 
-      opts.on("-P", "--no_path_validation", "Does not validates path") do
+      opts.on("-P", "--no_path_validation", "Does not validate webpage path") do
           @options[:path_validation] = false
       end
 
