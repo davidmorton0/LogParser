@@ -20,4 +20,19 @@ module Constants
     columns: [:gray, :green, :red]  #if more columns, last color will be used
   }
 
+  LOG_COLOR = :cyan
+
+  DEFAULT_OPTIONS = { ip_validation: :ip4,
+                      path_validation: true,
+                      page_views: true,
+                      unique_page_views: true,
+                      file: 'webserver.log' }
+
+  LOG_WARNINGS = { file: { name: 'File Errors', important: true },
+                   log: { name: 'Log Format Errors', important: true },
+                   ip4: { name: 'ip4 Address Format Errors', important: false },
+                   ip6: { name: 'ip6 Address Format Errors', important: false },
+                   ip: { name: 'ip Address Format Errors', important: false },
+                   page: { name: 'Path Format Errors', important: false } }
+
 end
