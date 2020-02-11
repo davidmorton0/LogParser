@@ -11,9 +11,9 @@ class IpValidator
                                   !!address.match(VALID_IP6) }
   }
 
-  def initialize(ip_address, validation)
+  def initialize(ip_address:, validation:)
     @ip_address = ip_address
-    @validation = VALID_ADDRESS[validation]
+    @validation = VALID_ADDRESS[validation || :none]
   end
 
   def valid?

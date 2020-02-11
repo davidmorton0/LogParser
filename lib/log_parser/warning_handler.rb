@@ -3,7 +3,7 @@ class WarningHandler
   include ColorText
 
   WARNING_COLORS = { true => :red,      #important warnings color
-                     false => :yellow } #not-important warnings color
+                     false => :yellow } #non-important warnings color
 
   attr_reader :warnings, :warning_info
 
@@ -16,33 +16,49 @@ class WarningHandler
     self
   end
 
-  def warnings_summary(color: false)
+  def warnings_summary(add_color: false)
     summary = {}
     warning_info.each { |type, info| summary[type] = [] }
     @warnings.each{ |warning| summary[warning[:type]].push(warning[:message]) }
     summary.map{ |warning_type, warnings|
-      text_color = WARNING_COLORS[warning_info[warning_type][:important]]
-      text = "#{warning_info[warning_type][:name]}: #{warnings.length} warning#{warnings.length == 1 ? '' : 's'}"
-      warning_list = [ colorize_if(text, text_color, color) ]
+      warning_list = [ colorize_if(
+        warning_summary(warning_info[warning_type][:name], warnings.length),
+        WARNING_COLORS[warning_info[warning_type][:important]],
+        add_color) ]
       warning_list.concat(warnings) if warning_info[warning_type][:important]
       warning_list
     }.flatten
   end
 
-  def output_warnings(warnings_to_output, color: false)
+  def output_warnings(warnings_to_output, add_color: false)
     warnings_to_output.map{ |warning|
-      text = "#{warning_info[warning[:type]][:name]}: #{warning[:message]}"
-      text_color = WARNING_COLORS[warning_info[warning[:type]][:important]]
-      colorize_if(text, text_color, color)
+      colorize_if(
+        "%<name>s: %<message>s" % {
+          name: warning_info[warning[:type]][:name],
+          message: warning[:message]},
+        WARNING_COLORS[warning_info[warning[:type]][:important]],
+        add_color)
     }
   end
 
-  def important_warnings(color: false)
+  def important_warnings(add_color: false)
     output_warnings(@warnings.filter{ |warning|
-      warning_info[warning[:type]][:important] }, color: color)
+      warning_info[warning[:type]][:important] }, add_color: add_color)
   end
 
-  def full_warnings(color: false)
-    output_warnings(@warnings, color: color)
+  def full_warnings(add_color: false)
+    output_warnings(@warnings, add_color: add_color)
   end
+
+  def pluralise(item, number)
+    item + (number != 1 ? 's' : '')
+  end
+
+  def warning_summary(name, number)
+    "%<name>s: %<number>d %<warnings>s" % {
+      name: name,
+      number: number,
+      warnings: pluralise('warning', number) }
+  end
+
 end
