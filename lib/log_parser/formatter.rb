@@ -47,15 +47,15 @@ class Formatter
                                  .join(",\n")
     "\n%<file_info>s\n%<logs_read>s\n%<logs_added>s" % {
       file_info: colorize_if("Files read: #{files}",
-        LOG_COLOR, add_color),
+        OUTPUT_COLORS[:log], add_color),
       logs_read: colorize_if("Logs read: #{log_info[:logs_read]}",
-        LOG_COLOR, add_color),
+        OUTPUT_COLORS[:log], add_color),
       logs_added: colorize_if("Logs added: #{log_info[:logs_added]}",
-        LOG_COLOR, add_color)
+        OUTPUT_COLORS[:log], add_color)
     }
   end
 
-  def format_warnings(warning_handler:, quiet: false, verbose: false, add_color:)
+  def format_warnings(warning_handler:, quiet: false, verbose: false, add_color: false)
     if quiet
       warnings = warning_handler.important_warnings(add_color: add_color)
     elsif verbose

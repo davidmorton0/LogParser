@@ -31,22 +31,20 @@ class OptionHandler
 
       opts.on("-f", "--file FILE",
         "Log file to read. Default is webserver.log") do |file|
-          options[:file] = file if !options[:multiple_files]
+          options[:file] = file if !options[:files]
       end
 
       opts.on("-m", "--multiple_files 'FILE_LIST'",
-        "Read a list of files in quotes and combines") do |file|
+        "Read a list of files in quotes and combines") do |file_list|
           options[:file] = nil
-          options[:multiple_files] = true
-          options[:files] = file
+          options[:files] = file_list.split(' ')
       end
 
-      opts.on("-o", "--output_file [FILE]",
-        "Write output to file.") do |file|
+      opts.on("-o", "--output_file [FILE]", "Write output to file.") do |file|
           options[:output_file] = file || 'log_info.txt'
       end
 
-      opts.on("-t", "--timestamp", "Add timestamp to output file") do |file|
+      opts.on("-t", "--timestamp", "Add timestamp to output file") do
           options[:timestamp] = true
       end
 

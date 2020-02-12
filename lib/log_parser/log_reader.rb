@@ -1,15 +1,8 @@
 class LogReader
   include Constants
 
-  WARNING_NAMES = {
-    log: 'log',
-    ip4: 'ip4 address',
-    ip6: 'ip6 address',
-    ip4_ip6: 'ip address',
-    path: 'path'
-  }
-
-  attr_accessor :options, :read_log, :warnings, :logs_read, :logs_added, :files_read
+  attr_accessor :logs_read, :logs_added
+  attr_reader :read_log, :warnings, :files_read, :options
 
   def initialize(options: {})
     @read_log = Hash.new { |h, k| h[k] = [] }
@@ -18,6 +11,7 @@ class LogReader
     @logs_read = 0;
     @logs_added = 0;
     @files_read = [];
+
     if options[:file]
       load_log(file: options[:file])
     elsif options[:file_list]
@@ -63,10 +57,9 @@ class LogReader
   def add_warning_if(type:, line_number:, file:, add_if:)
     if add_if
       warnings.push({ type: type,
-                    message: log_warning_message(
-                      name: WARNING_NAMES[type],
-                      line_number: line_number,
-                      file: file) })
+                      message: log_warning_message(name: WARNING_NAMES[type],
+                                                   line_number: line_number,
+                                                   file: file) })
     end
   end
 

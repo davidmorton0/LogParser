@@ -12,7 +12,7 @@ if __FILE__ == $0
 
   log_reader = LogReader.new( options: {
     file: @options[:file],
-    file_list: @options[:files] ? @options[:files].split(' ') : nil,
+    file_list: @options[:files],
     path_validation: @options[:path_validation],
     ip_validation: @options[:ip_validation],
     log_remove: @options[:log_remove] })
