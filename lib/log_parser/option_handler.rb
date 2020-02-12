@@ -3,11 +3,11 @@ require 'optparse'
 class OptionHandler
   include Constants
 
-  attr_accessor :options
+  attr_reader :options
 
   def initialize
 
-    @options = DEFAULT_OPTIONS
+    @options = DEFAULT_OPTIONS.clone
 
     OptionParser.new do |opts|
 
@@ -29,15 +29,20 @@ class OptionHandler
           options[:highlighting] = false
       end
 
-      opts.on("-f", "--file FILE",
+      opts.on("-f", "--file [FILE]",
         "Log file to read. Default is webserver.log") do |file|
-          options[:file] = file if !options[:files]
+          options[:file] = file || 'webserver.log' if !options[:files]
       end
 
-      opts.on("-m", "--multiple_files 'FILE_LIST'",
+      opts.on("-m", "--multiple_files ['FILE_LIST']",
         "Read a list of files in quotes and combines") do |file_list|
-          options[:file] = nil
-          options[:files] = file_list.split(' ')
+          if file_list
+            options[:file] = nil
+            options[:files] = file_list.split(' ')
+          else
+            puts "No input file list found.  Exiting." if ENV['APP_ENV'] != 'test'
+            exit 50
+          end
       end
 
       opts.on("-o", "--output_file [FILE]", "Write output to file.") do |file|
@@ -91,11 +96,11 @@ class OptionHandler
       end
 
       opts.on("-g", "--page_visits", "Show page visits (default)") do
-          options[:page_views] = true
+          options[:page_visits] = true
       end
 
       opts.on("-G", "--no_page_visits", "Do not show page visits") do
-          options[:page_views] = false
+          options[:page_visits] = false
       end
 
       opts.on("-u", "--unique_page_views",
@@ -108,5 +113,6 @@ class OptionHandler
           options[:unique_page_views] = false
       end
     end.parse!
+
   end
 end
