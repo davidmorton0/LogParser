@@ -62,12 +62,10 @@ class OptionHandlerTest < Minitest::Test
     assert_equal 'file1', option_handler.options[:files][0]
   end
 
-  describe 'no multiple file list' do
-    it 'exits' do
-      assert_raises SystemExit do
-        ARGV << '-m'
-        OptionHandler.new
-      end
+  def test_no_multiple_file_list
+    assert_raises SystemExit do
+      ARGV << '-m'
+      OptionHandler.new
     end
   end
 
@@ -84,6 +82,23 @@ class OptionHandlerTest < Minitest::Test
   def test_adds_timestamp_to_output_file
     ARGV << '-t'
     assert OptionHandler.new.options[:timestamp]
+  end
+
+  def test_sets_file_output_format_to_text
+    ARGV << '-x'
+    assert_equal :text, OptionHandler.new.options[:output_format]
+  end
+
+  def test_sets_file_output_format_to_json
+    ARGV << '-j'
+    assert_equal :json, OptionHandler.new.options[:output_format]
+  end
+
+  def test_exits_on_help
+    assert_raises SystemExit do
+      ARGV << '-h'
+      OptionHandler.new
+    end
   end
 
   def test_sets_ip_validation_to_ip4

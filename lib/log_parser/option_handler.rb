@@ -45,7 +45,7 @@ class OptionHandler
           end
       end
 
-      opts.on("-o", "--output_file [FILE]", "Write output to file.") do |file|
+      opts.on("-o", "--output_file [FILE]", "Write output to file") do |file|
           options[:output_file] = file || 'log_info.txt'
       end
 
@@ -53,9 +53,17 @@ class OptionHandler
           options[:timestamp] = true
       end
 
+      opts.on("-x", "--text", "Sets file output format to text (default)") do
+          options[:output_format] = :text
+      end
+
+      opts.on("-j", "--json", "Sets file output format to json") do
+          options[:output_format] = :json
+      end
+
       opts.on("-h", "--help", "Shows help") do
-        puts opts
-        exit
+        puts opts if ENV['APP_ENV'] != 'test'
+        exit 51
       end
 
       opts.on("-4", "--ip4_validation",
