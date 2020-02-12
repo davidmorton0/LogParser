@@ -27,17 +27,17 @@ class ParserTest < Minitest::Test
   def test_returns_page_visits_info
     parser = Parser.new()
     parser.count_views(logs: LOG_DATA)
-    assert_equal PAGE_VISITS[:title], parser.view_info(:visits)[:title]
-    assert_equal PAGE_VISITS[:descriptor], parser.view_info(:visits)[:descriptor]
-    assert_equal PAGE_VISITS[:info], parser.view_info(:visits)[:info]
+    assert_equal PAGE_VISITS[:title], parser.view_info(view_type: :visits)[:title]
+    assert_equal PAGE_VISITS[:descriptor], parser.view_info(view_type: :visits)[:descriptor]
+    assert_equal PAGE_VISITS[:info], parser.view_info(view_type: :visits)[:info]
   end
 
   def test_returns_page_unique_views_info
     parser = Parser.new()
     parser.count_views(logs: LOG_DATA)
-    assert_equal UNIQUE_PAGE_VIEWS[:title], parser.view_info(:unique_views)[:title]
-    assert_equal UNIQUE_PAGE_VIEWS[:descriptor], parser.view_info(:unique_views)[:descriptor]
-    assert_equal UNIQUE_PAGE_VIEWS[:info], parser.view_info(:unique_views)[:info]
+    assert_equal UNIQUE_PAGE_VIEWS[:title], parser.view_info(view_type: :unique_views)[:title]
+    assert_equal UNIQUE_PAGE_VIEWS[:descriptor], parser.view_info(view_type: :unique_views)[:descriptor]
+    assert_equal UNIQUE_PAGE_VIEWS[:info], parser.view_info(view_type: :unique_views)[:info]
   end
 
   def test_returns_log_info

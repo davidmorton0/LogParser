@@ -21,9 +21,8 @@ if __FILE__ == $0
                       quiet: @options[:quiet],
                       verbose: @options[:verbose])
   parser.count_views
-
   output_processor = OutputProcessor.new(parser: parser, options: @options)
-  output_processor.output_to_display
-  output_processor.write_to_file if !!@options[:output_file]
+  puts output_processor.output_to_display
+  output_processor.write_to_file(format: @options[:output_format]) if !!@options[:output_file]
 
 end

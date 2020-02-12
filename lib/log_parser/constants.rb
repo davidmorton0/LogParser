@@ -4,7 +4,8 @@ module Constants
                       path_validation: true,
                       page_views: true,
                       unique_page_views: true,
-                      file: 'webserver.log'}
+                      file: 'webserver.log', 
+                      output_format: :text }
 
   OUTPUT_COLORS = { title: :cyan,        # can be :black, :red, :green, :yellow,
                     line_break: :yellow, # :blue, :magenta, :cyan, :gray, :white
