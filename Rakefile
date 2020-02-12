@@ -1,3 +1,4 @@
+ENV['APP_ENV'] = 'test'
 require "bundler/gem_tasks"
 require "rake/testtask"
 
@@ -7,4 +8,5 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList["test/**/*_test.rb"]
 end
 
+ENV['RACK_ENV'] = 'test'
 task :default => :test
