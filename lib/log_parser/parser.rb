@@ -1,8 +1,7 @@
 class Parser
   include Constants
 
-    attr_accessor :page_views, :log_reader
-    attr_reader :formatter, :quiet, :verbose
+    attr_reader :page_views, :formatter, :log_reader, :quiet, :verbose
 
     def initialize(log_reader: {}, quiet: false, verbose: false)
       @page_views = {}
@@ -13,8 +12,8 @@ class Parser
     end
 
     def set_warning_handler
-      warnings = log_info ? log_info[:warnings] : []
-      WarningHandler.new(warnings).set_warning_info(LOG_WARNINGS)
+      WarningHandler.new(warnings: log_info[:warnings])
+                    .set_warning_info(warning_info: LOG_WARNINGS)
     end
 
     def count_views(logs: log_reader.read_log)
