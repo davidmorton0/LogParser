@@ -62,7 +62,11 @@ class Parser
         output["pageVisits"][page] = views[:visits]
         output["uniquePageViews"][page] = views[:unique_views]
       }
-      warnings = verbose ? warning_handler.full_warnings : warning_handler.important_warnings
+      if verbose
+        warnings = warning_handler.full_warnings
+      else
+        warnings = warning_handler.important_warnings
+      end
       output["warnings"] = warnings
       output
     end

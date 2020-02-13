@@ -18,10 +18,14 @@ class WarningHandler
     warning_info.each { |type, info| summary[type] = [] }
     @warnings.each{ |warning| summary[warning[:type]].push(warning[:message]) }
     summary.map{ |warning_type, warnings|
+      if warnings.length > 0
+        color = WARNING_COLORS[warning_info[warning_type][:important]]
+      else
+        color = WARNING_COLORS[:none]
+      end
       warning_list = [ colorize_if(
         warning_summary(warning_info[warning_type][:name] + 's', warnings.length),
-        WARNING_COLORS[warning_info[warning_type][:important]],
-        add_color) ]
+        color, add_color) ]
       warning_list.concat(warnings) if warning_info[warning_type][:important]
       warning_list
     }.flatten

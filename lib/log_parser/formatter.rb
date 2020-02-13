@@ -66,4 +66,10 @@ class Formatter
     "\n%<warnings>s\n" % { warnings: warnings.join("\n") }
   end
 
+  def format_options(options:)
+    "\nOptions selected:\n\n%<options>s\n\n" % { options:
+      OPTION_DESCRIPTIONS.map{ |k, v|
+         OPTION_DESCRIPTIONS[k].(options[k]) }.join(",\n") }
+  end
+
 end

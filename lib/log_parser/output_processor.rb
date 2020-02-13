@@ -31,7 +31,7 @@ class OutputProcessor
   def output_to_display
     output = []
     if !@options[:quiet]
-      if @options[:page_views]
+      if @options[:page_visits]
         output.push(parser.formatted_page_views(view_type: :visits, add_color: add_color))
       end
       if @options[:unique_page_views]
@@ -45,7 +45,7 @@ class OutputProcessor
 
   def output_to_file_text
     output = []
-    if @options[:page_views]
+    if @options[:page_visits]
       output.push((parser.formatted_page_views(view_type: :visits).join("\n")))
     end
     if @options[:unique_page_views]
@@ -59,7 +59,6 @@ class OutputProcessor
   def output_to_file_json
     JSON.pretty_generate parser.hash_format(verbose: @options[:verbose])
   end
-
 
   def write_to_file(format:)
     file = name_output_file

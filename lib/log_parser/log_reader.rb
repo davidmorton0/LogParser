@@ -11,12 +11,12 @@ class LogReader
     @logs_read = 0;
     @logs_added = 0;
     @files_read = [];
+    @options[:file_list] ||= [DEFAULT_LOG]
+  end
 
-    if options[:file]
-      load_log(file: options[:file])
-    elsif options[:file_list]
-      options[:file_list].each{ |file| load_log(file: file) }
-    end
+  def load_logs
+    options[:file_list].each{ |file| load_log(file: file) }
+    self
   end
 
   def load_log(file:)
@@ -40,7 +40,7 @@ class LogReader
 
     path, ip_address = log.split(' ')
     ip_valid = valid_ip?(ip_address: ip_address)
-    path_valid = valid_path?(path: path)
+    path_valid = !options[:path_validation] || valid_path?(path: path)
 
     add_warning_if(type: options[:ip_validation], line_number: line_number,
                    file: file, add_if: !ip_valid)
@@ -56,10 +56,11 @@ class LogReader
 
   def add_warning_if(type:, line_number:, file:, add_if:)
     if add_if
-      warnings.push({ type: type,
-                      message: log_warning_message(name: WARNING_NAMES[type],
-                                                   line_number: line_number,
-                                                   file: file) })
+      warnings.push({
+        type: type,
+        message: log_warning_message(name: VALIDATION_NAMES[type],
+                                     line_number: line_number,
+                                     file: file) })
     end
   end
 
