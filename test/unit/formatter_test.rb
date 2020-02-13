@@ -110,4 +110,21 @@ class FormatterTest < Minitest::Test
     warning_handler = WarningHandler.new(warnings: TEST_WARNINGS_1).set_warning_info(warning_info: LOG_WARNINGS)
     assert_equal TEST_WARNING_VERBOSE_1, Formatter.new().format_warnings(warning_handler: warning_handler, verbose: true)
   end
+
+  def test_format_options
+    formatted_options = Formatter.new().format_options(options: ALL_OPTIONS_ON)
+    assert_match (/verbose: true/), formatted_options
+    assert_match (/quiet: true/), formatted_options
+    assert_match (/highlighting: true/), formatted_options
+    assert_match (/file: test.log/), formatted_options
+    assert_match (/file list: test1.log, test2.log, test3.log/), formatted_options
+    assert_match (/output format: text/), formatted_options
+    assert_match (/timestamp: true/), formatted_options
+    assert_match (/ip validation: ip4 address/), formatted_options
+    assert_match (/path validation: true/), formatted_options
+    assert_match (/ignore invalid logs: true/), formatted_options
+    assert_match (/path validation: true/), formatted_options
+    assert_match (/page visits: true/), formatted_options
+    assert_match (/unique page views: true/), formatted_options
+  end
 end

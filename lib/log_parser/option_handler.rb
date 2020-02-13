@@ -8,6 +8,7 @@ class OptionHandler
   def initialize
 
     @options = DEFAULT_OPTIONS.clone
+    @options[:file_list] = []
 
     OptionParser.new do |opts|
 
@@ -21,26 +22,30 @@ class OptionHandler
           options[:verbose] = false
       end
 
-      opts.on("-c", "--color", "Enable highlighting") do
+      opts.on("-c", "--color", "Enables colored display text") do
           options[:highlighting] = true
       end
 
-      opts.on("-C", "--no_color", "Disable highlighting (default)") do
+      opts.on("-C", "--no_color", "Disables colored display text (default)") do
           options[:highlighting] = false
       end
 
       opts.on("-f", "--file [FILE]",
         "Log file to read. Default is webserver.log") do |file|
-          options[:file] = file || 'webserver.log' if !options[:files]
+          if file
+            options[:file_list].push(file)
+          else
+            puts "Missing input file name.  Exiting." if ENV['APP_ENV'] != 'test'
+            exit 50
+          end
       end
 
       opts.on("-m", "--multiple_files ['FILE_LIST']",
-        "Read a list of files in quotes and combines") do |file_list|
+        "Read a list of log files in quotes") do |file_list|
           if file_list
-            options[:file] = nil
-            options[:files] = file_list.split(' ')
+            options[:file_list] += file_list.split(' ')
           else
-            puts "No input file list found.  Exiting." if ENV['APP_ENV'] != 'test'
+            puts "Missing input file list.  Exiting." if ENV['APP_ENV'] != 'test'
             exit 50
           end
       end
@@ -76,7 +81,7 @@ class OptionHandler
           options[:ip_validation] = :ip6
       end
 
-      opts.on("-i", "--ip4_or_ip6_validation",
+      opts.on("-i", "--ip4ip6_validation",
         "Validate ip addresses using either ip4 or ip6 format") do
           options[:ip_validation] = :ip4_ip6
       end
@@ -91,7 +96,7 @@ class OptionHandler
       end
 
       opts.on("-R", "--warn_invalid",
-        "Warn but not ignore log if invalid ip addresss or path (default)") do
+        "Warn but not ignore log if invalid ip address or path (default)") do
           options[:log_remove] = false
       end
 

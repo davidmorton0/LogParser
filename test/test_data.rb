@@ -57,6 +57,20 @@ module TestData
                            'Path Format Error: Another error occured',
                            'Log Format Error: A third error occured'].join("\n") + "\n"
 
+  ALL_OPTIONS_ON = { verbose: true,
+                     quiet: true,
+                     highlighting: true,
+                     file: 'test.log',
+                     file_list: ['test1.log', 'test2.log', 'test3.log'],
+                     output_file: 'output.txt',
+                     timestamp: true,
+                     output_format: :text,
+                     ip_validation: :ip4,
+                     path_validation: true,
+                     log_remove: true,
+                     page_visits: true,
+                     unique_page_views: true }
+
 #WarningHanderTest Data
    WARNING_INFO = { warning_type_1: { name: 'Warning Type 1', important: false },
                     warning_type_2: { name: 'Warning Type 2', important: false },
