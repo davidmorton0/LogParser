@@ -30,7 +30,7 @@ If no files are specified, the default file 'webserver.log' will be read.
   `wslp -c`
   `wslp --color`
 
-Displays colored text output.  Colors can be change in Options.rb.
+Displays colored text output.  Colors can be change in Constants.rb.
 
   `wslp -C`
   `wslp --no_color`
@@ -151,13 +151,43 @@ ip6 addresses can be compressed e.g.
 
   `\webpage\index 1234:1234::1234`
 
-# Testing
+## Testing
 
-Tests will run using:
+Tests can be run using:
 
   `rake test`
 
 Tests have been separated into
-* unit tests - testing methods in each class
-* integration tests - testing the whole app
-* performance - testing large log files
+* unit tests - test methods in each class
+* integration tests - test the whole app
+* performance - parses a log file with 10,000 logs and a log with 100 logs
+100 times.  Calculates the time taken and logs parsed/second.  The log files
+are a mixture of ip4 and ip6 addresses.
+
+## App structure
+
+A class diagram can be found here: https://tinyurl.com/tky2f74
+Note that the dependencies to Constants are not shown.
+
+### Classes
+
+* Parser - Holds the log information and changes the format
+* LogReader - Loads files then reads logs.  Validates logs, ip addresses and paths
+* ipValidator - Validates ip addresses
+* PathValidator - Validates the path for the webpage
+* OptionHandler - Sets the options from the command line arguments given
+* Formatter - Formats information for text or display output
+* OutputProcessor - Assembles the information for output
+* WarningHandler - Handles the warnings found when parsing the logs
+
+### Modules
+
+* LogParser - Starts the app and calls the methods in order
+* Constants - Contains default options and other constants used in the app
+* TestData - Contains the data used in the tests
+* ColorText - Adds color to text
+* Version - Gives the current version number
+
+### Logs
+
+* test_logs contains log files used in testing

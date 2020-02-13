@@ -97,18 +97,18 @@ class FormatterTest < Minitest::Test
   end
 
   def test_formats_test_warnings_in_quiet_mode
-    warning_handler = WarningHandler.new(warnings: TEST_WARNINGS_1).set_warning_info(warning_info: LOG_WARNINGS)
-    assert_equal TEST_WARNING_QUIET_1, Formatter.new().format_warnings(warning_handler: warning_handler, quiet: true)
+    warnings = WarningHandler.new(warnings: TEST_WARNINGS_1).set_warning_info(warning_info: LOG_WARNINGS).warnings_summary
+    assert_equal TEST_WARNING_QUIET_1, Formatter.new().format_minimal_warnings(warnings: warnings)
   end
 
-  def test_formats_test_warnings_in_normal_mode
-    warning_handler = WarningHandler.new(warnings: TEST_WARNINGS_1).set_warning_info(warning_info: LOG_WARNINGS)
-    assert_equal TEST_WARNING_STD_1, Formatter.new().format_warnings(warning_handler: warning_handler)
+  def test_formats_normal_warnings
+    warnings = WarningHandler.new(warnings: TEST_WARNINGS_1).set_warning_info(warning_info: LOG_WARNINGS).warnings_summary
+    assert_equal TEST_WARNING_STD_1, Formatter.new().format_normal_warnings(warnings: warnings)
   end
 
-  def test_formats_test_warnings_in_verbose_mode
-    warning_handler = WarningHandler.new(warnings: TEST_WARNINGS_1).set_warning_info(warning_info: LOG_WARNINGS)
-    assert_equal TEST_WARNING_VERBOSE_1, Formatter.new().format_warnings(warning_handler: warning_handler, verbose: true)
+  def test_formats_full_warnings
+    warnings = WarningHandler.new(warnings: TEST_WARNINGS_1).set_warning_info(warning_info: LOG_WARNINGS).warnings_summary
+    assert_equal TEST_WARNING_VERBOSE_1, Formatter.new().format_full_warnings(warnings: warnings)
   end
 
   def test_format_options
@@ -116,7 +116,6 @@ class FormatterTest < Minitest::Test
     assert_match (/verbose: true/), formatted_options
     assert_match (/quiet: true/), formatted_options
     assert_match (/highlighting: true/), formatted_options
-    assert_match (/file: test.log/), formatted_options
     assert_match (/file list: test1.log, test2.log, test3.log/), formatted_options
     assert_match (/output format: text/), formatted_options
     assert_match (/timestamp: true/), formatted_options
@@ -126,5 +125,13 @@ class FormatterTest < Minitest::Test
     assert_match (/path validation: true/), formatted_options
     assert_match (/page visits: true/), formatted_options
     assert_match (/unique page views: true/), formatted_options
+  end
+
+  def test_pluralises_multiple_items
+    assert_equal 'things', Formatter.new().pluralise('thing', 5)
+  end
+
+  def test_doesnt_pluralise_single_items
+    assert_equal 'thing', Formatter.new().pluralise('thing', 1)
   end
 end

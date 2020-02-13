@@ -10,6 +10,13 @@ class OptionHandlerTest < Minitest::Test
     }
   end
 
+  def test_exits_on_invalid_option
+    ARGV << '-k'
+    assert_raises SystemExit do
+      OptionHandler.new
+    end
+  end
+
   def test_sets_verbose_option
     ARGV << '-v'
     assert OptionHandler.new.options[:verbose]
