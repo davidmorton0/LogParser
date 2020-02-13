@@ -41,21 +41,28 @@ module TestData
                      { type: :path, message: 'Another error occured' },
                      { type: :log, message: 'A third error occured' }]
 
-  TEST_WARNING_QUIET_1 = "\n" + ['Log Format Error: An error occured',
-                         'Log Format Error: A third error occured'].join("\n") + "\n"
+  TEST_WARNING_QUIET_1 = ["Log Format Errors: 2 warnings",
+                          "An error occured",
+                          "A third error occured"].join("\n")
 
-  TEST_WARNING_STD_1 = "\n" + ['File Errors: 0 warnings',
-                       'Log Format Errors: 2 warnings',
-                       'An error occured',
-                       'A third error occured',
-                       'Ip4 Address Format Errors: 0 warnings',
-                       'Ip6 Address Format Errors: 0 warnings',
-                       'Ip Address Format Errors: 0 warnings',
-                       'Path Format Errors: 1 warning'].join("\n") + "\n"
+  TEST_WARNING_STD_1 = ['File Errors: 0 warnings',
+                        'Log Format Errors: 2 warnings',
+                        'An error occured',
+                        'A third error occured',
+                        'Ip4 Address Format Errors: 0 warnings',
+                        'Ip6 Address Format Errors: 0 warnings',
+                        'Ip Address Format Errors: 0 warnings',
+                        'Path Format Errors: 1 warning'].join("\n")
 
-  TEST_WARNING_VERBOSE_1 = "\n" + ['Log Format Error: An error occured',
-                           'Path Format Error: Another error occured',
-                           'Log Format Error: A third error occured'].join("\n") + "\n"
+  TEST_WARNING_VERBOSE_1 = ['File Errors: 0 warnings',
+                            'Log Format Errors: 2 warnings',
+                            'An error occured',
+                            'A third error occured',
+                            'Ip4 Address Format Errors: 0 warnings',
+                            'Ip6 Address Format Errors: 0 warnings',
+                            'Ip Address Format Errors: 0 warnings',
+                            'Path Format Errors: 1 warning',
+                            'Another error occured'].join("\n")
 
   ALL_OPTIONS_ON = { verbose: true,
                      quiet: true,
@@ -87,7 +94,27 @@ module TestData
                     { type: :warning_type_5, message: 'warning message 5' },
                     { type: :warning_type_5, message: 'warning message 6' }]
 
-   WARNINGS_SUMMARY = ['Warning Type 1s: 1 warning',
+   WARNINGS_SUMMARY = {
+     :warning_type_1=> { :name=>"Warning Type 1",
+                         :important=>false,
+                         :warnings=>["warning message 1"] },
+     :warning_type_2=> { :name=>"Warning Type 2",
+                         :important=>false,
+                         :warnings=>["warning message 2", "warning message 3",
+                                    "warning message 3", "warning message 3"] },
+     :warning_type_3=> { :name=>"Warning Type 3",
+                         :important=>true,
+                         :warnings=>["warning message 4"] },
+     :warning_type_4=> { :name=>"Warning Type 4",
+                         :important=>true,
+                         :warnings=>[] },
+     :warning_type_5=> { :name=>"Warning Type 5",
+                         :important=>true,
+                         :warnings=>["warning message 5", "warning message 6"] }
+                       }
+
+=begin
+   ['Warning Type 1s: 1 warning',
                        'Warning Type 2s: 4 warnings',
                        'Warning Type 3s: 1 warning',
                        'warning message 4',
@@ -95,7 +122,7 @@ module TestData
                        'Warning Type 5s: 2 warnings',
                        'warning message 5',
                        'warning message 6',]
-
+=end
    WARNINGS_IMPORTANT = ['Warning Type 3: warning message 4',
                          'Warning Type 5: warning message 5',
                          'Warning Type 5: warning message 6']

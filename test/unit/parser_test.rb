@@ -130,14 +130,14 @@ class ParserTest < Minitest::Test
     assert_match (/\/about 2/), formatted_visits[3]
   end
 
-  def test_returns_formatted_warnings
+  def test_returns_formatted_full_warnings
     file = File.join(File.dirname(__FILE__), '../test_logs/error.log')
     parser = Parser.new(log_reader: LogReader.new(
       options: { file_list: [file],
                  log_remove: true,
                  ip_validation: :ip4,
                  path_validation: true }).load_logs)
-    formatted_warnings = parser.formatted_warnings()
+    formatted_warnings = parser.formatted_full_warnings()
     assert_match (/File Error/), formatted_warnings
     assert_match file, formatted_warnings
     assert_match (/Log Format Error/), formatted_warnings

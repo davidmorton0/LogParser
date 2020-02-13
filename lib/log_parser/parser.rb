@@ -10,10 +10,10 @@ class Parser
       @warning_handler = nil
     end
 
-    def warning_handler
-      @warning_handler ||
+    def warnings
       WarningHandler.new(warnings: log_info[:warnings])
                     .set_warning_info(warning_info: LOG_WARNINGS)
+                    .warnings_summary
     end
 
     def count_views(logs: log_reader.read_log)
@@ -44,14 +44,19 @@ class Parser
       formatter.format_info(view_info: view_info(view_type: view_type), add_color: add_color)
     end
 
-    def formatted_warnings(add_color: false, quiet: false, verbose: false)
-      formatter.format_warnings(warning_handler: warning_handler,
-                                quiet: quiet,
-                                verbose: verbose,
-                                add_color: add_color)
+    def formatted_full_warnings(add_color: false)
+      formatter.format_full_warnings(warnings: warnings, add_color: add_color)
     end
 
-    def hash_format(verbose: false)
+    def formatted_minimal_warnings(add_color: false)
+      formatter.format_minimal_warnings(warnings: warnings, add_color: add_color)
+    end
+
+    def formatted_normal_warnings(add_color: false)
+      formatter.format_normal_warnings(warnings: warnings, add_color: add_color)
+    end
+
+    def hash_format(verbose:)
       output = {}
       output["filesRead"] = log_info[:files_read]
       output["logsRead"] = log_info[:logs_read]
@@ -63,11 +68,22 @@ class Parser
         output["uniquePageViews"][page] = views[:unique_views]
       }
       if verbose
-        warnings = warning_handler.full_warnings
+        warning_summary = warnings.map{ |type, info|
+          { WARNINGS_JSON[type] => {
+            "numberWarnings": info[:warnings].length,
+            "warnings": info[:warnings] } } }
       else
-        warnings = warning_handler.important_warnings
+        warning_summary = warnings.map{ |type, info|
+          if info[:important]
+            { WARNINGS_JSON[type] => {
+              "numberWarnings": info[:warnings].length,
+              "warnings": info[:warnings] } }
+          else
+            { WARNINGS_JSON[type] => {
+              "numberWarnings": info[:warnings].length, } }
+          end }
       end
-      output["warnings"] = warnings
+      output["warnings"] = warning_summary
       output
     end
 

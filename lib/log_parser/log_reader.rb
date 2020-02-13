@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Reads logs
 class LogReader
   include Constants
 
@@ -7,25 +10,26 @@ class LogReader
   def initialize(options: {})
     @read_log = Hash.new { |h, k| h[k] = [] }
     @options = options
-    @warnings = [];
-    @logs_read = 0;
-    @logs_added = 0;
-    @files_read = [];
-    @options[:file_list] ||= [DEFAULT_LOG]
+    @warnings = []
+    @logs_read = 0
+    @logs_added = 0
+    @files_read = []
+    @options[:file_list] = [DEFAULT_LOG] if options[:file_list] == []
   end
 
   def load_logs
-    options[:file_list].each{ |file| load_log(file: file) }
+    options[:file_list].each { |file| load_log(file: file) }
     self
   end
 
   def load_log(file:)
     begin
-      File.open(file,'r').each.with_index { |line, i|
-        add_log(log: line, line_number: i + 1, file: file) }
+      File.open(file, 'r').each.with_index do |line, i|
+        add_log(log: line, line_number: i + 1, file: file)
+      end
       @files_read.push(file)
     rescue
-      warnings.push({ type: :file, message: " - File not found: %s" % file })
+      warnings.push(type: :file, message: ' - File not found: %s' % file)
     end
     self
   end
@@ -36,7 +40,7 @@ class LogReader
     log_valid = valid_log?(log: log)
     add_warning_if(type: :log, line_number: line_number, file: file,
                    add_if: !log_valid)
-    return self if !log_valid
+    return self unless log_valid
 
     path, ip_address = log.split(' ')
     ip_valid = valid_ip?(ip_address: ip_address)

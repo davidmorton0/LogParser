@@ -1,7 +1,6 @@
 require 'json'
 
 class OutputProcessor
-  include ColorText
   include Constants
 
   attr_reader :add_color, :parser
@@ -30,7 +29,9 @@ class OutputProcessor
 
   def output_to_display
     output = []
-    if !@options[:quiet]
+    if @options[:quiet]
+      output.push(parser.formatted_minimal_warnings(add_color: add_color))
+    else
       if @options[:page_visits]
         output.push(parser.formatted_page_views(view_type: :visits, add_color: add_color))
       end
@@ -38,8 +39,13 @@ class OutputProcessor
         output.push(parser.formatted_page_views(view_type: :unique_views, add_color: add_color))
       end
       output.push(parser.formatted_log_info(add_color: add_color))
+      if @options[:verbose]
+        output.unshift(Formatter.new.format_options(options: @options, add_color: add_color))
+        output.push("", parser.formatted_full_warnings(add_color: add_color))
+      else
+        output.push("", parser.formatted_normal_warnings(add_color: add_color))
+      end
     end
-    output.push(parser.formatted_warnings(add_color: add_color, quiet: @options[:quiet], verbose: @options[:verbose]))
     output.join("\n")
   end
 
@@ -52,7 +58,11 @@ class OutputProcessor
       output.push(parser.formatted_page_views(view_type: :unique_views).join("\n"))
     end
     output.push(parser.formatted_log_info)
-    output.push(parser.formatted_warnings(quiet: @options[:quiet], verbose: @options[:verbose]))
+    if @options[:verbose]
+      output.push(parser.formatted_full_warnings)
+    else
+      output.push(parser.formatted_normal_warnings)
+    end
     output.join("\n")
   end
 
