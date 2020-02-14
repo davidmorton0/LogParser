@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["david.n.morton@protonmail.com"]
 
   spec.summary       = %q{A command line parser for web server logs}
-  spec.homepage      = "https://github.com/davidmorton0/LogParser"
+  spec.homepage      = "https://github.com/davidmorton0/WebLogParser"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
     #spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
     #spec.metadata["homepage_uri"] = spec.homepage
-    spec.metadata["source_code_uri"] = "https://github.com/davidmorton0/LogParser"
+    spec.metadata["source_code_uri"] = "https://github.com/davidmorton0/WebLogParser"
     #spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
