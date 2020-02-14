@@ -1,5 +1,8 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
+# Tests for ColorText Module
 class ColorTextTest < Minitest::Test
   include ColorText
 
@@ -18,5 +21,4 @@ class ColorTextTest < Minitest::Test
   def test_color_if_does_not_add_color_to_text_when_false
     assert_equal 'red_text', colorize_if('red_text', :red, false)
   end
-
 end

@@ -29,7 +29,8 @@ class LogReader
       end
       @files_read.push(file)
     rescue
-      warnings.push(type: :file, message: ' - File not found: %s' % file)
+      warnings.push(type: :file,
+                    message: format(' - File not found: %<file>s', file: file))
     end
     self
   end
@@ -59,26 +60,29 @@ class LogReader
   end
 
   def add_warning_if(type:, line_number:, file:, add_if:)
-    if add_if
-      warnings.push({
-        type: type,
-        message: log_warning_message(name: VALIDATION_NAMES[type],
-                                     line_number: line_number,
-                                     file: file) })
-    end
+    return unless add_if
+
+    warnings.push(type: type,
+                  message: log_warning_message(
+                    name: VALIDATION_NAMES[type],
+                    line_number: line_number,
+                    file: file
+                  ))
   end
 
   def log_warning_message(name:, line_number:, file:)
-    " - Invalid %<name>s%<line_file>s" % { name: name,
-      line_file: add_line_and_file_name(line_number, file) }
+    format(' - Invalid %<name>s%<line_file>s',
+           name: name,
+           line_file: add_line_and_file_name(line_number, file))
   end
 
   def add_line_and_file_name(line_number, file)
-    add_file_name(file) + " - line %<line>d" % { line: line_number }
+    format('%<file>s - line %<line>d', file: add_file_name(file),
+                                       line: line_number)
   end
 
   def add_file_name(file)
-    " - File: %<file>s" % { file: file }
+    format(' - File: %<file>s', file: file)
   end
 
   def valid_ip?(ip_address:)
@@ -87,11 +91,10 @@ class LogReader
   end
 
   def valid_log?(log:)
-    !!log.match(VALID_LOG)
+    log.match(VALID_LOG)
   end
 
   def valid_path?(path:)
     PathValidator.new(path: path).valid?
   end
-
 end

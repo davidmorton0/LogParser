@@ -1,5 +1,7 @@
-require 'json'
+# frozen_string_literal: true
 
+require 'json'
+# Processes output for display or write to file
 class OutputProcessor
   include Constants
 
@@ -21,7 +23,7 @@ class OutputProcessor
 
   def timestamp_filename(file)
     dir  = File.dirname(file)
-    base = File.basename(file, ".*")
+    base = File.basename(file, '.*')
     time = Time.now.strftime('%d-%m-%y_%H-%M-%S')
     ext  = File.extname(file)
     File.join(dir, "#{base}_#{time}#{ext}")
@@ -33,17 +35,20 @@ class OutputProcessor
       output.push(parser.formatted_minimal_warnings(add_color: add_color))
     else
       if @options[:page_visits]
-        output.push(parser.formatted_page_views(view_type: :visits, add_color: add_color))
+        output.push(parser.formatted_page_views(view_type: :visits,
+                                                add_color: add_color))
       end
       if @options[:unique_page_views]
-        output.push(parser.formatted_page_views(view_type: :unique_views, add_color: add_color))
+        output.push(parser.formatted_page_views(view_type: :unique_views,
+                                                add_color: add_color))
       end
       output.push(parser.formatted_log_info(add_color: add_color))
       if @options[:verbose]
-        output.unshift(Formatter.new.format_options(options: @options, add_color: add_color))
-        output.push("", parser.formatted_full_warnings(add_color: add_color))
+        output.unshift(Formatter.new.format_options(options: @options,
+                                                    add_color: add_color))
+        output.push('', parser.formatted_full_warnings(add_color: add_color))
       else
-        output.push("", parser.formatted_normal_warnings(add_color: add_color))
+        output.push('', parser.formatted_normal_warnings(add_color: add_color))
       end
     end
     output.join("\n")
@@ -52,10 +57,12 @@ class OutputProcessor
   def output_to_file_text
     output = []
     if @options[:page_visits]
-      output.push((parser.formatted_page_views(view_type: :visits).join("\n")))
+      output.push(parser.formatted_page_views(view_type: :visits).join("\n"))
     end
     if @options[:unique_page_views]
-      output.push(parser.formatted_page_views(view_type: :unique_views).join("\n"))
+      output.push(parser.formatted_page_views(
+        view_type: :unique_views
+      ).join("\n"))
     end
     output.push(parser.formatted_log_info)
     if @options[:verbose]
@@ -72,13 +79,12 @@ class OutputProcessor
 
   def write_to_file(format:)
     file = name_output_file
-    f = File.new(file,  'w')
+    f = File.new(file, 'w')
     format_select = { text: -> { output_to_file_text },
                       json: -> { output_to_file_json } }
-    f.write format_select[format].()
+    f.write format_select[format].call
     f.close
 
-    puts 'Output written to: %s' % file
+    puts format('Output written to: %<file>s', file: file)
   end
-
 end
