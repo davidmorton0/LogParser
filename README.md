@@ -21,6 +21,9 @@ This will read the log file and validates either ip4 or ip6 addresses.  The file
 contains both, so if you don't use the -i option, it will show some errors as
 the default is ip4.
 
+Alternatively, the app can be run from the cloned repo by running the
+bin\\wlparser file.
+
 ### Options
 
   `wlparser -h`
