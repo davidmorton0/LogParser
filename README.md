@@ -1,4 +1,4 @@
-# Webserver Log Parser - Readme
+# WebLog Parser - Readme
 
 ## Installing
 
@@ -6,20 +6,34 @@
 
 ## Usage
 
-wlparser reads a webserver logfile and counts page visits and unique page views.
-It uses a command-line interface.
+WebLog Parser reads a webserver logfile and counts page visits and unique page
+views.  It uses a command-line interface.
+
+### Getting Started
+
+An example log file can be found at https://tinyurl.com/ve8x3qs
+You can download this file and name it 'weblog.log'.
+Then run the command:
+
+  `wlparser -i -f weblog.log`
+
+This will read the log file and validates either ip4 or ip6 addresses.  The file
+contains both, so if you don't use the -i option, it will show some errors as
+the default is ip4.
+
+### Options
 
   `wlparser -h`
   `wlparser --help`
 
 Shows a list of options
 
-  `wlparser -f logfile.log`
+  `wlparser -f logfile.log`  
   `wlparser --file logfile.log`
 
 Reads a log file and display results:
 
-  `wlparser -m 'logfile1.log logfile2.log'`
+  `wlparser -m 'logfile1.log logfile2.log'`  
   `wlparser --multiple_files 'logfile1.log logfile2.log'`
 
 Reads a list of log files in quotes and displays results.  All files give
@@ -83,7 +97,7 @@ Validates ip addresses using ip6 format.
  `wlparser -6`
  `wlparser --ip4ip6_validation`
 
-Validates ip addresses if it matches either ip4 or ip6 format.
+Validates ip addresses if they matches either ip4 or ip6 format.
 
  `wlparser -I`
  `wlparser --no_ip_validation`
@@ -103,7 +117,7 @@ Does not validate webpage path, assumes they are all valid.
  `wlparser -r`
  `wlparser --remove_invalid`
 
-Ignore logs in files if either ip address or path is invalid.
+Ignore logs if either ip address or path is invalid.
 
  `wlparser -R`
  `wlparser --warn_invalid`
@@ -129,7 +143,7 @@ Displays unique page views in results and in text file output (default).
   `wlparser -U`
   `wlparser --no_unique_page_views`
 
-Displays page visits in results and in text file output (default).
+Does not display unique page views in results or text file output (default).
 
 ##Log Format
 
@@ -141,8 +155,7 @@ Example log with ip4 address:
 
 Logs can use either using ip4 addresses or ip6 addresses.  
 
-ip4 addresses should be valid i.e. between 0.0.0.0 and 255.255.255.255, although
-you can skip this check.
+ip4 addresses should be valid i.e. between 0.0.0.0 and 255.255.255.255, although you can skip this check.
 
 Example log with ip6 address:
   `\webpage\index 1234:1234:1234:1234:1234:1234:1234:1234`
@@ -153,9 +166,11 @@ ip6 addresses can be compressed e.g.
 
 ## Testing
 
-Tests can be run using:
+Tests can be run from the cloned repository using:
 
   `rake test`
+
+The git repository is: https://github.com/davidmorton0/WebLogParser
 
 Tests have been separated into
 * unit tests - test methods in each class
@@ -176,7 +191,8 @@ Note that the dependencies to Constants are not shown.
 ### Classes
 
 * Parser - Holds the log information and changes the format
-* LogReader - Loads files then reads logs.  Validates logs, ip addresses and paths
+* LogReader - Loads files then reads logs.  Validates logs, ip addresses and
+paths
 * ipValidator - Validates ip addresses
 * PathValidator - Validates the path for the webpage
 * OptionHandler - Sets the options from the command line arguments given
