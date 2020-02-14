@@ -96,7 +96,8 @@ class Formatter
         color = WARNING_COLORS[:none]
         text = [warning_summary(info[:name], info[:warnings].length)].join("\n")
       else
-        color = info[:warnings].empty? ? WARNING_COLORS[:none] : WARNING_COLORS[false]
+        color_key = info[:warnings].empty? ? :none : false
+        color = WARNING_COLORS[color_key]
         text = [warning_summary(info[:name], info[:warnings].length)].join("\n")
       end
       colorize_if(text, color, add_color)

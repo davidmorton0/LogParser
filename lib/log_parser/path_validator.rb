@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Vaidates the webpath (slug)
 class PathValidator
   include Constants
 
@@ -8,7 +11,6 @@ class PathValidator
   end
 
   def valid?
-    !!path.match(VALID_PATH)
+    path.match(VALID_PATH)
   end
-
 end

@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
+# Tests for PathValidator Class
 class PathValidatorTest < Minitest::Test
-
   def test_validates_basic_path
     assert PathValidator.new(path: '/home').valid?
   end
@@ -42,56 +44,55 @@ class PathValidatorTest < Minitest::Test
     refute PathValidator.new(path: '/ home').valid?
   end
 
-  def test_path_cannot_contain_1# "
+  def test_path_cannot_contain_1 # "
     refute PathValidator.new(path: '/home"').valid?
   end
 
-  def test_path_cannot_contain_2# <
+  def test_path_cannot_contain_2 # <
     refute PathValidator.new(path: '/home<').valid?
   end
 
-  def test_path_cannot_contain_3# >
+  def test_path_cannot_contain_3 # >
     refute PathValidator.new(path: '/home>').valid?
   end
 
-  def test_path_cannot_contain_4# #
+  def test_path_cannot_contain_4 # #
     refute PathValidator.new(path: '/home#').valid?
   end
 
-  def test_path_cannot_contain_5# %
+  def test_path_cannot_contain_5 # %
     refute PathValidator.new(path: '/home%').valid?
   end
 
-  def test_path_cannot_contain_6# {
+  def test_path_cannot_contain_6 # {
     refute PathValidator.new(path: '/home{').valid?
   end
 
-  def test_path_cannot_contain_7# }
+  def test_path_cannot_contain_7 # }
     refute PathValidator.new(path: '/home}').valid?
   end
 
-  def test_path_cannot_contain_8# |
+  def test_path_cannot_contain_8 # |
     refute PathValidator.new(path: '/home|').valid?
   end
 
-  def test_path_cannot_contain_9# ^
+  def test_path_cannot_contain_9 # ^
     refute PathValidator.new(path: '/home^').valid?
   end
 
-  def test_path_cannot_contain_10# ~
+  def test_path_cannot_contain_10 # ~
     refute PathValidator.new(path: '/home~').valid?
   end
 
-  def test_path_cannot_contain_11# [
+  def test_path_cannot_contain_11 # [
     refute PathValidator.new(path: '/home[').valid?
   end
 
-  def test_path_cannot_contain_12# ]
+  def test_path_cannot_contain_12 # ]
     refute PathValidator.new(path: '/home]').valid?
   end
 
-  def test_path_cannot_contain_13# `
+  def test_path_cannot_contain_13 # `
     refute PathValidator.new(path: '/home`').valid?
   end
-
 end

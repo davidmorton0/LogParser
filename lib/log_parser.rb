@@ -1,32 +1,31 @@
-#!/usr/bin/env ruby
+# frozen_string_literal: true
 
 Dir.glob(File.join(__dir__, 'log_parser', '*.rb'))
    .sort
    .each { |file| require file }
 
+# main file for app
 module LogParser
-end
+  def self.parse
+    @options = OptionHandler.new.options
 
-if __FILE__ == $PROGRAM_NAME
+    log_reader = LogReader.new(
+      options: { file_list: @options[:file_list],
+                 path_validation: @options[:path_validation],
+                 ip_validation: @options[:ip_validation],
+                 log_remove: @options[:log_remove] }
+    ).load_logs
 
-  @options = OptionHandler.new.options
+    parser = Parser.new(log_reader: log_reader,
+                        quiet: @options[:quiet],
+                        verbose: @options[:verbose])
+    parser.count_views
 
-  log_reader = LogReader.new(
-    options: { file_list: @options[:file_list],
-               path_validation: @options[:path_validation],
-               ip_validation: @options[:ip_validation],
-               log_remove: @options[:log_remove] }
-  ).load_logs
+    output_processor = OutputProcessor.new(parser: parser, options: @options)
+    puts output_processor.output_to_display
 
-  parser = Parser.new(log_reader: log_reader,
-                      quiet: @options[:quiet],
-                      verbose: @options[:verbose])
-  parser.count_views
+    return unless @options[:output_file]
 
-  output_processor = OutputProcessor.new(parser: parser, options: @options)
-  puts output_processor.output_to_display
-  if @options[:output_file]
     output_processor.write_to_file(format: @options[:output_format])
   end
-
 end

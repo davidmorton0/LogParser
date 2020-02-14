@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
+# Tests for OptionHandler class
 class OptionHandlerTest < Minitest::Test
   include Constants
 
   def test_sets_default_options
     option_handler = OptionHandler.new
-    option_handler.options.each{ |option, value|
+    option_handler.options.each do |option, value|
       assert_equal DEFAULT_OPTIONS[option], value
-    }
+    end
   end
 
   def test_exits_on_invalid_option
@@ -253,6 +256,4 @@ class OptionHandlerTest < Minitest::Test
     ARGV << '--no_unique_page_views'
     refute OptionHandler.new.options[:unique_page_views]
   end
-
-
 end
