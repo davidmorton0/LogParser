@@ -2,132 +2,132 @@
 
 ## Installing
 
-  `gem install wslp`
+  `gem install weblog-parser`
 
 ## Usage
 
-LogParser reads a webserver logfile and counts page visits and unique page views.
+wlparser reads a webserver logfile and counts page visits and unique page views.
 It uses a command-line interface.
 
-  `wslp -h`
-  `wslp --help`
+  `wlparser -h`
+  `wlparser --help`
 
 Shows a list of options
 
-  `wslp -f logfile.log`
-  `wslp --file logfile.log`
+  `wlparser -f logfile.log`
+  `wlparser --file logfile.log`
 
 Reads a log file and display results:
 
-  `wslp -m 'logfile1.log logfile2.log'`
-  `wslp --multiple_files 'logfile1.log logfile2.log'`
+  `wlparser -m 'logfile1.log logfile2.log'`
+  `wlparser --multiple_files 'logfile1.log logfile2.log'`
 
 Reads a list of log files in quotes and displays results.  All files give
 using -f or -m options will be read and the output combined.
 
 If no files are specified, the default file 'webserver.log' will be read.
 
-  `wslp -c`
-  `wslp --color`
+  `wlparser -c`
+  `wlparser --color`
 
 Displays colored text output.  Colors can be change in Constants.rb.
 
-  `wslp -C`
-  `wslp --no_color`
+  `wlparser -C`
+  `wlparser --no_color`
 
 Disables colored text output.
 
-  `wslp -v`
-  `wslp --verbose`
+  `wlparser -v`
+  `wlparser --verbose`
 
 Shows extra information, including all validation warnings.
 
-  `wslp -q`
-  `wslp --quiet`
+  `wlparser -q`
+  `wlparser --quiet`
 
 Displays minimal information i.e. only important warnings.  Will still write
 information to a file if this option is selected.  Disables verbose.
 
-  `wslp -o`
-  `wslp --output_file info.txt`
+  `wlparser -o`
+  `wlparser --output_file info.txt`
 
 Writes output to file.  Default is 'log_info.txt' if no file chosen, although
 this will only work if this is the last argument given.
 
-  `wslp -t`
-  `wslp --timestamp`
+  `wlparser -t`
+  `wlparser --timestamp`
 
 Adds a timestamp to the output file.  If an output file is given that already
 exists, this is turned on automatically.
 
-  `wslp -x`
-  `wslp --text`
+  `wlparser -x`
+  `wlparser --text`
 
 Sets file output format to text, similar to that displayed (default).
 
- `wslp -j`
- `wslp --json`
+ `wlparser -j`
+ `wlparser --json`
 
 Sets file output format to json.
 
- `wslp -4`
- `wslp --ip4_validation`
+ `wlparser -4`
+ `wlparser --ip4_validation`
 
 Validates ip addresses using ip4 format (default).
 
- `wslp -6`
- `wslp --ip6_validation`
+ `wlparser -6`
+ `wlparser --ip6_validation`
 
 Validates ip addresses using ip6 format.
 
- `wslp -6`
- `wslp --ip4ip6_validation`
+ `wlparser -6`
+ `wlparser --ip4ip6_validation`
 
 Validates ip addresses if it matches either ip4 or ip6 format.
 
- `wslp -I`
- `wslp --no_ip_validation`
+ `wlparser -I`
+ `wlparser --no_ip_validation`
 
 Does not validate ip addresses, assumes they are all valid.
 
- `wslp -p`
- `wslp --path_validation`
+ `wlparser -p`
+ `wlparser --path_validation`
 
 Validates webpage path (default).
 
- `wslp -P`
- `wslp --no_path_validation`
+ `wlparser -P`
+ `wlparser --no_path_validation`
 
 Does not validate webpage path, assumes they are all valid.
 
- `wslp -r`
- `wslp --remove_invalid`
+ `wlparser -r`
+ `wlparser --remove_invalid`
 
 Ignore logs in files if either ip address or path is invalid.
 
- `wslp -R`
- `wslp --warn_invalid`
+ `wlparser -R`
+ `wlparser --warn_invalid`
 
 Warns about logs with invalid ip addresss or path, but still reads them
 (default)
 
-  `wslp -g`
-  `wslp --page_visits`
+  `wlparser -g`
+  `wlparser --page_visits`
 
 Displays page visits in results and in text file output (default).
 
-  `wslp -g`
-  `wslp --page_visits`
+  `wlparser -g`
+  `wlparser --page_visits`
 
 Does not display page visits in results or text file output.
 
-  `wslp -u`
-  `wslp --unique_page_views`
+  `wlparser -u`
+  `wlparser --unique_page_views`
 
 Displays unique page views in results and in text file output (default).
 
-  `wslp -U`
-  `wslp --no_unique_page_views`
+  `wlparser -U`
+  `wlparser --no_unique_page_views`
 
 Displays page visits in results and in text file output (default).
 
@@ -169,6 +169,10 @@ are a mixture of ip4 and ip6 addresses.
 A class diagram can be found here: https://tinyurl.com/tky2f74
 Note that the dependencies to Constants are not shown.
 
+## Executables
+
+* wlparser - Starts the app
+
 ### Classes
 
 * Parser - Holds the log information and changes the format
@@ -182,7 +186,7 @@ Note that the dependencies to Constants are not shown.
 
 ### Modules
 
-* LogParser - Starts the app and calls the methods in order
+* LogParser - Calls the methods in order
 * Constants - Contains default options and other constants used in the app
 * TestData - Contains the data used in the tests
 * ColorText - Adds color to text

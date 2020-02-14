@@ -83,7 +83,7 @@ class Parser
         if info[:important]
           { WARNINGS_JSON[type] => {
             'numberWarnings': info[:warnings].length,
-            'warnings': info[:warnings]
+            'messages': info[:warnings]
           } }
         else
           { WARNINGS_JSON[type] => {
